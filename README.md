@@ -1,68 +1,78 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Tic Tac Toe Buildout
 
-## Available Scripts
+**As a user, I should start off seeing a 3x3 grid on the main page.**
 
-In the project directory, you can run:
+- Create a component called Square.js with a div
+- Give square some dimensions and a border
+- Since we need to map over the squares, we need an array to hold those values
+- Create a state object
+- Map over the Square component to generate 9 squares on the board
+- Pass value/index to Square.js
+- Format the Squares to create a gameboard
+- Add a Header
 
-### `yarn start`
+**As a user, I should be able to click on a square to mark it.**
+- Start with getting the index of each square onClick in Square.js with a method called handleClick
+- Having each Square knowing where it lives isn't super helpful
+- Move the logic into App.js
+- Create a method in App.js called squareClick that takes an argument creates an alert
+- Pass this method as props to Square.js
+- Update handleClick in Square.js to call squareClick and pass the argument of this.props.index
+- Now we get the same result but App.js is handling the logic and not Square.js
+- Update the method to show the index in the square when the box is clicked rather than as an alert
+- Now rather than the index, set the board with a marker - just starting with one player
+- Add a current player to the state object, currentPlayer: "🍣"
+- Update the squareClick method
+- Add more styling to square
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**As a user, my partner should be able to click on a square after me and see their mark.**
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- Current player needs to be able to toggle
+- Update the currentPlayer item in state after every click with a ternary operator
 
-### `yarn test`
+**As a user, I shouldn't be able to click on a square that has already been selected.**
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- The state should only be set if the current value is null
+- Wrap all the logic in squareClick in an if statement
 
-### `yarn build`
+**As a user, when someone has won the game (3 squares in a row: horizontally, vertically, or diagonally) I should see a notice telling me who won.(done)**
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- The big daddy of user stories
+- Create a separate function to handle the winning condition
+- Create a matrix (an array of arrays) for all the possible combinations of winning indexes
+```
+winning = () => {
+   let winningConditions = [
+     [0, 1, 2],
+     [3, 4, 5],
+     [6, 7, 8],
+     [0, 3, 6],
+     [1, 4, 7],
+     [2, 5, 8],
+     [0, 4, 8],
+     [2, 4, 6],
+   ]
+ }
+ ```
+- map over the array so that each value is one set of three indexes
+- Call the winning method in the squareClick method and see the value log on each click
+- Destructure the array and log each item, a/b/c represents each index listed in the array
+```
+const [a, b, c] = value
+```
+- check for the initial value and log `a`
+- This console log shows the three possible trilogies of win conditions for this player starting at index 0
+- The index of 0 in the gameboard has been updated to hold the value of sushi emoji
+- Update the if statement to look for more values held by one player
+- The value at location [a] on gameBoard is sushi, then value at location [b] is sushi
+- Now clicking on just one square doesn't satisfy the condition anymore, they both must be held by sushi to meet the condition
+- Add in the evaluator for `b == c`
+- Now we have to set the state to declare a winner
+- Add an item to the state object: winner: null
+- Set the state of the current player in the winning method
+- Print the winner on the page
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+**As a user, I should not be able to continue playing the game after the game has been won.**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- Update the if statement in squareClick so the click can only happen if winner === null
+- Wrap the winning function call in an if statement that only runs if winner === null
